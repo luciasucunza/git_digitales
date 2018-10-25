@@ -21,7 +21,7 @@ begin
 				);
 
 	Mux2 : entity WORK.myMux(ARCH_myMux)
-	port MAP( a => a(3 downto 1),
+	port MAP( a => a(3 downto 2),
 				 c => c(0),
 				 s => aux(1)
 				);

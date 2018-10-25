@@ -18,19 +18,25 @@ architecture ARCH_incGray of incGray is
 begin
 
 	GB: entity WORK.grayBinario(ARCH_grayBinario)
+		generic MAP( N		=>	N
+						)
 		port MAP( gray    => entrada,
 					 binario => binario
 					);
 
 	FA : entity WORK.fullAdderN(ARCH_fullAdderN)
-	port MAP( a  => binario,
-				 b  => STD_LOGIC_VECTOR(to_unsigned(0,N-1)),
+		generic MAP( N		=>	N
+						)
+		port MAP( a  => binario,
+				 b  => STD_LOGIC_VECTOR(to_unsigned(0,N)),
 				 ci => '1',
 				 s  => binarioSum,
 				 co => carry
 				);
 				
 	BG: entity WORK.binarioGray(ARCH_binarioGray)
+		generic MAP( N		=>	N
+						)
 		port MAP( binario => binarioSum,
 					 gray    => salida
 					);

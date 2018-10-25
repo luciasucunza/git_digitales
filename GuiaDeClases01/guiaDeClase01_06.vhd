@@ -15,10 +15,10 @@ architecture ARCH_grayBinario of grayBinario is
 begin
 	
 	binario <= bin;
-	bin(0)  <= gray(0);
+	bin(N-1)<= gray(N-1);
 	
-	GB: for i in 1 to N-1 generate
-		bin(i) <= gray(i) Xor bin(i-1);
+	GB: for i in 0 to N-2 generate
+		bin(i) <= gray(i) Xor bin(i+1);
 	end generate;
 		
 end ARCH_grayBinario;

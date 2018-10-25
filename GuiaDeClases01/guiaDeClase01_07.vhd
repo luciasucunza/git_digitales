@@ -11,7 +11,7 @@ architecture ARCH_binarioGray of binarioGray is
 
 begin
 
-	gray <= binario Xor ( binario(N-2)&binario(N-2 downto 0) );
-
+	gray <= binario Xor '0'&binario(N-1 downto 1);
+		
 end ARCH_binarioGray;
 
