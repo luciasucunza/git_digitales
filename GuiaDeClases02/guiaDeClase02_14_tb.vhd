@@ -99,7 +99,14 @@ BEGIN
 		rst <= '1';		
 		wait for clk_period*1;
 		rst <= '0';
+		d <= '0';
 	
+		wait for clk_period*2;
+		d <= '1';
+		wait for clk_period*3;
+		d <= '0';
+		wait for clk_period*2;
+		d <= '1';
 		wait;
    end process;
 

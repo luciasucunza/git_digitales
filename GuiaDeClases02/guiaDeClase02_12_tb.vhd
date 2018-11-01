@@ -1,10 +1,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 
-ENTITY guiaDeClase_02_12_tb IS
-END guiaDeClase_02_12_tb;
+ENTITY guiaDeClase02_12_tb IS
+END guiaDeClase02_12_tb;
  
-ARCHITECTURE behavior OF guiaDeClase_02_12_tb IS 
+ARCHITECTURE behavior OF guiaDeClase02_12_tb IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
@@ -57,7 +57,23 @@ BEGIN
    begin		
       -- hold reset state for 100 ns.
       wait for 100 ns;	
-
+		rst <= '1';
+		ena <= '1';
+		dir <= '0';
+		
+		wait for clk_period*2;
+		rst <= '0';
+		
+		wait for clk_period*20;
+		ena <= '0';
+		wait for clk_period*2;
+		ena <= '1';
+		
+		wait for clk_period*2;
+		rst <= '1';
+		wait for clk_period*2;
+		rst <= '0';
+		dir <= '1';
 
       wait;
    end process;

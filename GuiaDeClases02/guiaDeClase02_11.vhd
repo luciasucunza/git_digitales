@@ -12,34 +12,30 @@ end myCnt;
 
 architecture ARCH_myCnt of myCnt is
 
-	signal qdSignal : STD_LOGIC_VECTOR(N-1 downto 0);
-	signal andSignal: STD_LOGIC_VECTOR(N-2 downto 0);
-
+	signal qSignal : STD_LOGIC_VECTOR(N-1 downto 0);
+	signal dSignal: STD_LOGIC_VECTOR(N-1 downto 0);
+	signal andSignal: STD_LOGIC_VECTOR(N-1 downto 0);
+	
 begin
 
-	q	<= qdSignal;
-	
-	FFD0: entity WORK.myFFDSE(ARCH_myFFDSE)
-		port MAP( clk => clk,
-					 set => rst,
-					 ena => ena,
-					 d   => ena Xor qdSignal(0),
-					 q   => qdSignal(0)
-					);
-																			
-	SR: for i in 1 to N-1 generate
+	q	<= qSignal;
+												
+	SR: for i in 0 to N-1 generate
 		FFDN: entity WORK.myFFDRE(ARCH_myFFDRE)
 		port MAP( clk => clk,
 					 rst => rst,
 					 ena => ena,
-					 d   => andSignal(i-1) xor qdSignal(i),
-					 q   => qdSignal(i)
+					 d   => dSignal(i),
+					 q   => qSignal(i)
 					);
 	end generate;
 	
-	andSignal(0) <= qdSignal(0) and ena; 
-	ANDS: for i in 1 to N-2 generate
-		andSignal(i) <= qdSignal(i) and andSignal(i-1);
+	andSignal(0) <= ena; 
+	dSignal(0)   <= andSignal(0) xor qSignal(0); 
+	
+	ANDS: for i in 1 to N-1 generate
+		andSignal(i) <= qSignal(i-1) and andSignal(i-1);
+		dSignal(i)   <= andSignal(i) xor qSignal(i);
 	end generate;
 	
 end ARCH_myCnt;
