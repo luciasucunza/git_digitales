@@ -21,8 +21,8 @@ architecture ARCH_myUartTx of myUartTx is
 	type Tstate is ( IDLE, TX0, TX1, TX2, TX3, TX4, TX5, TX6, TX7, STOP, START);
 	
 	constant BIT_IDLE  : STD_LOGIC := '1';
-	constant BIT_START : STD_LOGIC := '1';
-	constant BIT_STOP  : STD_LOGIC := '0';
+	constant BIT_START : STD_LOGIC := '0';
+	constant BIT_STOP  : STD_LOGIC := '1';
 	
 	signal sNext, sNow : Tstate;
 	signal sRegDataNow : STD_LOGIC_VECTOR( dataSize-1 downto 0);
