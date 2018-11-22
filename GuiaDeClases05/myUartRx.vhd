@@ -17,10 +17,6 @@ end myUartRx;
 architecture ARCH_myUartRx of myUartRx is
 	
 	type Tstate is ( IDLE, RX0, RX1, RX2, RX3, RX4, RX5, RX6, RX7, STOP, START, DELAY);
-	
-	constant BIT_IDLE  : STD_LOGIC := '1';
-	constant BIT_START : STD_LOGIC := '1';
-	constant BIT_STOP  : STD_LOGIC := '0';
 
 	signal sNext, sNow 		: Tstate;
 	
