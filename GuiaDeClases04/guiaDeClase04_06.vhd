@@ -14,14 +14,34 @@ architecture Arch_myUartTest of myUartTest is
 
 	signal sRx 		: STD_LOGIC;
 	signal ena		: STD_LOGIC;
-	signal ena_led	: STD_LOGIC;
 	signal sTx		: STD_LOGIC;
-	signal sLed 	: STD_LOGIC_VECTOR (8-1 downto 0);
+	signal sLedNext	: STD_LOGIC_VECTOR (8-1 downto 0);
+	signal sLedNow 	: STD_LOGIC_VECTOR (8-1 downto 0);
 
 begin
 	sRx <= rx;
 	tx 	<= sTx;
-	led <= sLed when ena_led = '1' else (others => '0');
+
+	led <= sLedNow;
+
+	SEC: PROCESS( clk )
+	begin
+		if rising_edge( clk ) then
+			if rst = '1' then 
+				sLedNow  <= (others => '0');
+			else 
+				sLedNow	<= sLedNext;
+			end if;
+		end if;
+	end PROCESS;
+
+	LC: PROCESS( sLedNow, sDataRx, sDataRd )
+	begin
+		sLedNext <= sLedNow;
+		if sDataRd = '1' then
+			sLedNext <= sDataRx;
+		end if;
+	end PROCESS;
 	
 	CONT: entity work.myCnt (Arch_myCnt)
 	generic map (M => 100000000) 
@@ -41,8 +61,8 @@ begin
 		dataTx 	=> sw,
 		ready 	=> open,
 		tx 		=> sTx,
-		dataRd 	=> ena_led,
-		dataRx 	=> sLed,
+		dataRd 	=> sDataRd,
+		dataRx 	=> sDataRx,
 		rx 		=> sRx
 	);
 
