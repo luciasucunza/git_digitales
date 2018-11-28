@@ -1,6 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
+
 entity myUartTx is
 	Generic( baudRate 	: integer := 9600;
 				sysClk	 	: integer := 100000000;
@@ -19,15 +20,11 @@ architecture ARCH_myUartTx of myUartTx is
 	
 	type Tstate is ( IDLE, TX0, TX1, TX2, TX3, TX4, TX5, TX6, TX7, STOP, START);
 	
-	constant BIT_IDLE  : STD_LOGIC := '1';
-	constant BIT_START : STD_LOGIC := '0';
-	constant BIT_STOP  : STD_LOGIC := '1';
 	
 	signal sNext, sNow : Tstate;
-	signal sRegDataNow : STD_LOGIC_VECTOR( dataSize-1 downto 0);
-	signal sRegDataNext: STD_LOGIC_VECTOR( dataSize-1 downto 0);
-	signal sTx			 : STD_LOGIC;
+	signal memoriaTx	 : STD_LOGIC_VECTOR( dataSize-1 downto 0);
 	signal pulso104	 : STD_LOGIC;
+	signal enaMemo		 : STD_LOGIC;
 	signal rstDivFrec  : STD_LOGIC;
 
 begin
@@ -35,110 +32,130 @@ begin
 	SEC: PROCESS( clk )
 	begin
 		if rising_edge( clk ) then
-			tx <= sTx;
 			if rst = '1' then 
-				sNow 			<= IDLE;
-				tx 			<= BIT_IDLE;
+				sNow <= IDLE;
 			else 
-				sNow			<= sNext;
-				sRegDataNow <= sRegDataNext;
+				sNow <= sNext;
 			end if;
 		end if;
 	end PROCESS;
 	
-	LC: PROCESS( sNow, dataWr, pulso104, sRegDataNow,dataTx )
+	LC: PROCESS( sNow, dataWr, pulso104, memoriaTx )
 	begin
 		
-		rstDivFrec 	 <= '0';
-		ready			 <= '0';
-		sTx			 <= BIT_IDLE;
-		sRegDataNext <= sRegDataNow;
-		sNext <= sNow;
+		rstDivFrec 	<= '0';
+		enaMemo		<= '0';
+		ready			<= '0';
 		
 		case sNow is
 		
 			when IDLE =>
-				ready <= '1';
 				if dataWr = '1' then
-					sNext 		<= START;
-					sRegDataNext<= dataTx;
+					sNext <= START;
+					tx 	<= '0';
 					rstDivFrec 	<= '1';
-					sTx 			<= BIT_START;
-					
+				else
+					sNext <= IDLE;
+					enaMemo		<= '1';
+					tx 	<= '1';
+					ready	<= '1';
 				end if;
 				
 			when START =>
-				sTx <= BIT_START;
 				if pulso104 = '1' then
 					sNext <= TX0;
-					sTx 	<= sRegDataNow(0);
+					tx 	<= '0';
+				else 
+					sNext <= START;
+					tx 	<= memoriaTx(0);
 				end if;
 			
 			when TX0 =>
-				sTx <= sRegDataNow(0);
 				if pulso104 = '1' then
 					sNext <= TX1;
-					sTx 	<= sRegDataNow(1);
+					tx 	<= memoriaTx(1);
+				else 
+					sNext <= TX0;
+					tx 	<= memoriaTx(0);
 				end if;
-				
+									
 			when TX1 =>
-				sTx <= sRegDataNow(1);
 				if pulso104 = '1' then
 					sNext <= TX2;
-					sTx 	<= sRegDataNow(2);
-				end if;
+					tx 	<= memoriaTx(2);
+				else 
+					sNext <= TX1;
+					tx 	<= memoriaTx(1);
+				end if;	
 				
 			when TX2 =>
-				sTx <= sRegDataNow(2);
 				if pulso104 = '1' then
 					sNext <= TX3;
-					sTx 	<= sRegDataNow(3);
+					tx 	<= memoriaTx(3);
+				else 
+					sNext <= TX2;
+					tx 	<= memoriaTx(2);
 				end if;
-				
+			
 			when TX3 =>
-				sTx <= sRegDataNow(3);
 				if pulso104 = '1' then
 					sNext <= TX4;
-					sTx 	<= sRegDataNow(4);
+					tx 	<= memoriaTx(4);
+				else 
+					sNext <= TX3;
+					tx 	<= memoriaTx(3);
 				end if;
-				
+						
 			when TX4 =>
-				sTx <= sRegDataNow(4);
 				if pulso104 = '1' then
 					sNext <= TX5;
-					sTx 	<= sRegDataNow(5);
+					tx 	<= memoriaTx(5);
+				else 
+					sNext <= TX4;
+					tx 	<= memoriaTx(4);
 				end if;
 				
 			when TX5 =>
-				sTx <= sRegDataNow(5);
 				if pulso104 = '1' then
 					sNext <= TX6;
-					sTx 	<= sRegDataNow(6);
+					tx 	<= memoriaTx(6);
+				else 
+					sNext <= TX5;
+					tx 	<= memoriaTx(5);
 				end if;
-				
+			
 			when TX6 =>
-				sTx <= sRegDataNow(6);
 				if pulso104 = '1' then
 					sNext <= TX7;
-					sTx 	<= sRegDataNow(7);
+					tx 	<= memoriaTx(7);
+				else 
+					sNext <= TX6;
+					tx 	<= memoriaTx(6);
 				end if;
-				
+							
 			when TX7 =>
-				sTx <= sRegDataNow(7);
 				if pulso104 = '1' then
 					sNext <= STOP;
-					sTx 	<= BIT_STOP;
+					tx 	<= '1';
+				else 
+					sNext <= TX7;
+					tx 	<= memoriaTx(7);
 				end if;
 			
 			when STOP =>
-				sTx 	<= BIT_STOP;
 				if pulso104 = '1' then
 					sNext <= IDLE;
-					sTx 	<= BIT_IDLE;
+					tx 	<= '1';
+					ready <= '1';
+				else 
+					sNext <= STOP;
+					tx 	<= '1';
 				end if;
 			
 			when others =>
 					sNext <= IDLE;
+					tx 	<= '1';
+					ready <= '1';
 					
 		end case;
 	end PROCESS;
@@ -148,7 +165,17 @@ begin
 		port 	  MAP( 	clk 			=> clk,
 							rst  			=> rstDivFrec,
 							ena 			=> '1',
-							salidaM_2	=> OPEN,
 							salidaM		=> pulso104
 						);
+						
+	MEMO: for i in 0 to 8-1 generate
+		FFD: entity WORK.myFFDRE(ARCH_myFFDRE)
+		port MAP( clk => clk,
+					 rst => rst,
+					 ena => enaMemo,
+					 d   => dataTx(i),
+					 q   => memoriaTx(i)
+					);
+	end generate;
+
 end ARCH_myUartTx;

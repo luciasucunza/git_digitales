@@ -128,15 +128,15 @@ BEGIN
 		wait for 40*clk_period;    -- tiempo bit
 		
       ----------------------------------------------------------------------------------------
-		-- 4) Prueba modulo correctamente con trama 00010111
+		-- 4) Prueba modulo correctamente con trama 10101010
 		rst <= '0';						-- enable module
 		rx <= '1';					   -- rx en IDLE
 		wait for 40*clk_period;    -- tiempo bit
 		rx <= '0';					   -- bit start
-		wait for 40*clk_period;    -- tiempo bit 
+		wait for 40*clk_period;    -- tiempo bit
 		rx <= '1';					   -- bit 0
 		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 1
+		rx <= '0';					   -- bit 1
 		wait for 40*clk_period;    -- tiempo bit
 		rx <= '1';					   -- bit 2
 		wait for 40*clk_period;    -- tiempo bit
@@ -146,59 +146,12 @@ BEGIN
 		wait for 40*clk_period;    -- tiempo bit
 		rx <= '0';					   -- bit 5
 		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 6
+		rx <= '1';					   -- bit 6
 		wait for 40*clk_period;    -- tiempo bit
 		rx <= '0';					   -- bit 7
 		wait for 40*clk_period;    -- tiempo bit
 		rx <= '1';					   -- bit stop
-		wait for 2*400*clk_period;      
-		----------------------------------------------------------------------------------------
-		-- 4) Prueba modulo correctamente con trama 11010100 NO LO TIENE QUE MANDAR PORQUE NO MANDA EL BIT STOP
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit start
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 0
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 1
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 2
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 3
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 4
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 5
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 6
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 7
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit stop
-		wait for 2*400*clk_period;
-				----------------------------------------------------------------------------------------
-		-- 4) Prueba modulo correctamente con trama 11001100
-		rx <= '1';					   -- rx en IDLE
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit start
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 0
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 1
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 2
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 3
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 4
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '0';					   -- bit 5
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 6
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit 7
-		wait for 40*clk_period;    -- tiempo bit
-		rx <= '1';					   -- bit stop
-		wait for 2*400*clk_period;
+		wait for 2*40*clk_period;
 										
 		-- finaliza la simulacion
 		assert false
