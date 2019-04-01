@@ -21,7 +21,6 @@ architecture ARCH_myUart of myUart is
 
 begin
 
----------------------- Instancio la TX ---------------------- 
 	TX1 : entity WORK.myUartTx(ARCH_myUartTx)
 	generic MAP( baudRate	=> baudRate,
 					 sysClk		=> sysClk,
@@ -34,9 +33,7 @@ begin
 					ready  => Ready,
 					tx 	 => tx
 				);
--------------------------------------------------------------
 
----------------------- Instancio la RX ---------------------- 
 	RX1 : entity WORK.myUartRx(ARCH_myUartRx)
 	generic MAP( baudRate	=> baudRate,
 					 sysClk		=> sysClk,
@@ -48,6 +45,5 @@ begin
 					dataRx => dataRx,				
 					rx 	 => rx
 				);
--------------------------------------------------------------
 
 end ARCH_myUart;

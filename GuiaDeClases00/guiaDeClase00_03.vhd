@@ -12,8 +12,8 @@ end fullAdder;
 
 architecture ARCH_fullAdder of fullAdder is
 
-	signal ent : STD_LOGIC_VECTOR;
-	signal sal : STD_LOGIC_VECTOR;
+	signal ent : STD_LOGIC_VECTOR(3-1 downto 0);
+	signal sal : STD_LOGIC_VECTOR(2-1 downto 0);
 	
 begin
 

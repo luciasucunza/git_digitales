@@ -9,7 +9,7 @@ end myDeco7Seg;
 
 architecture ARCH_myDeco7Seg of myDeco7Seg is
 
-	signal salida : STD_LOGIC_VECTOR;
+	signal salida : STD_LOGIC_VECTOR( 7-1 downto 0);
 
 begin
 
@@ -18,13 +18,13 @@ begin
 		salida <=	"1111110" when "0000",
 						"0110000" when "0001",
 						"1101101" when "0010",
-						"0111001" when "0011",
-						"1110011" when "0100",
+						"1111001" when "0011",
+						"0110011" when "0100",
 						"1011011" when "0101",
 						"1011111" when "0110",
 						"1110000" when "0111",
 						"1111111" when "1000",
-						"1111111" when "1001",
+						"1111011" when "1001",
 						"1110111" when "1010",
 						"0011111" when "1011",
 						"1001110" when "1100",

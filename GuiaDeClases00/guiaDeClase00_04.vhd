@@ -11,6 +11,6 @@ architecture ARCH_paridadPar4 of paridadPar4 is
 
 begin
 
-	p <= a(0) Xor a(1) Xor a(2) Xor a(3);
+	p <= ((a(0) Xor a(1)) Xor a(2)) Xor a(3);
 
 end ARCH_paridadPar4;
